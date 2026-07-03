@@ -1,8 +1,7 @@
 // инфраструктура для запросов
-namespace Api.CQRS
+namespace Api.CQRS;
+
+public interface IQuery<out TResponse> : IRequest<TResponse>
+    where TResponse : notnull
 {
-    public interface IQuery<out TResponse> : IRequest<TResponse>
-        where TResponse : notnull
-    {
-    }
 }
