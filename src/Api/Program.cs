@@ -1,6 +1,3 @@
-using Api.Data.Seed;
-using Marten;
-
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
@@ -9,8 +6,17 @@ builder.Services.AddMarten(option =>
     option.Connection(connectionString);
 }).UseLightweightSessions().InitializeWith<InitializeBookDatabase>();
 
+// регистрация MediatR
+builder.Services.AddMediatR(config =>
+{
+    config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+});
+
+// регистрация Carter
+builder.Services.AddCarter();
+
 var app = builder.Build();
 
-app.MapGet("/test", () => "DZHITS_NDBT");
+app.MapCarter();
 
 app.Run();

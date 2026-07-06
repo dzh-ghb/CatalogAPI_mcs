@@ -1,7 +1,3 @@
-using Api.Model;
-using Marten;
-using Marten.Schema;
-
 namespace Api.Data.Seed;
 
 // класс для наполнения БД
