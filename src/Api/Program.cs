@@ -20,7 +20,11 @@ builder.Services.AddValidatorsFromAssembly(assembly);
 // регистрация Carter
 builder.Services.AddCarter();
 
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+
 var app = builder.Build();
+
+app.UseExceptionHandler(opt => { });
 
 app.MapCarter();
 

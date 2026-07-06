@@ -19,7 +19,7 @@ public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TReq
 
         if (failures.Any())
         {
-            throw new Exception("Ошибка валидации данных");
+            throw new ValidationException(failures);
         }
 
         return await next();
