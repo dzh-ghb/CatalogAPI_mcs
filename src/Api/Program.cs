@@ -6,11 +6,16 @@ builder.Services.AddMarten(option =>
     option.Connection(connectionString);
 }).UseLightweightSessions().InitializeWith<InitializeBookDatabase>();
 
+var assembly = typeof(Program).Assembly;
+
 // регистрация MediatR
 builder.Services.AddMediatR(config =>
 {
-    config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    config.RegisterServicesFromAssembly(assembly);
+    config.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
+
+builder.Services.AddValidatorsFromAssembly(assembly);
 
 // регистрация Carter
 builder.Services.AddCarter();

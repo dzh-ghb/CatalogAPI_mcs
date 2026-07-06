@@ -14,9 +14,9 @@ public class GetBooksEndpoint : ICarterModule
             [AsParameters] GetBooksRequest request,
             ISender sender) =>
         {
-            GetBooksQuery query = request.Adapt<GetBooksQuery>();
-            GetBooksResult result = await sender.Send(query);
-            GetBooksResponse response = result.Adapt<GetBooksResponse>();
+            var query = request.Adapt<GetBooksQuery>();
+            var result = await sender.Send(query);
+            var response = result.Adapt<GetBooksResponse>();
             return Results.Ok(response);
         });
     }
