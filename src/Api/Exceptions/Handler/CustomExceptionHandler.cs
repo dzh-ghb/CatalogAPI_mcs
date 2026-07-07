@@ -6,13 +6,18 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         logger.LogError(
-            "Ошибки: {exceptionMessage}, время: {time}",
+            "Ошибка: {exceptionMessage}, время: {time}",
             exception.Message,
             DateTime.Now
         );
 
         (string Detail, string Title, int StatusCode) details = exception switch
         {
+            BookNotFoundException => (
+                exception.Message,
+                exception.GetType().Name,
+                httpContext.Response.StatusCode = StatusCodes.Status404NotFound
+            ),
             _ => (
                 exception.Message,
                 exception.GetType().Name,

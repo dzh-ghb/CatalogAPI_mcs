@@ -13,3 +13,4 @@ global using Api.Model;
 global using Api.CQRS;
 global using Api.Behaviors;
 global using Api.Exceptions.Handler;
+global using Api.Exceptions;
