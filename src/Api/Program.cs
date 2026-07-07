@@ -12,6 +12,7 @@ var assembly = typeof(Program).Assembly;
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(assembly);
+    config.AddOpenBehavior(typeof(TimeoutBehavior<,>));
     config.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
 
