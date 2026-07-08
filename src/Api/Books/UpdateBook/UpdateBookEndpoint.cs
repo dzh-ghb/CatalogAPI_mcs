@@ -18,8 +18,7 @@ public class UpdateBookEndpoint : ICarterModule
     {
         app.MapPut("/books", async (
             UpdateBookRequest request,
-            ISender sender
-        ) =>
+            ISender sender) =>
         {
             var command = request.Adapt<UpdateBookCommand>();
             var result = await sender.Send(command);

@@ -10,8 +10,7 @@ public class DeleteBookEndpoint : ICarterModule
     {
         app.MapDelete("/books/{id}", async (
             Guid id,
-            ISender sender
-        ) =>
+            ISender sender) =>
         {
             var command = new DeleteBookCommand(id);
             var result = await sender.Send(command);
