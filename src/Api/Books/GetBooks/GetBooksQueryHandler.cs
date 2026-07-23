@@ -10,7 +10,7 @@ public class GetBooksQueryHandler(IDocumentSession session) : IQueryHandler<GetB
 {
     public async Task<GetBooksResult> Handle(GetBooksQuery query, CancellationToken cancellationToken)
     {
-        await Task.Delay(TimeSpan.FromSeconds(5)); // тест
+        // await Task.Delay(TimeSpan.FromSeconds(5)); // тест мониторинга времени выполнения запросов
 
         var books = await session.Query<Book>()
             // .ToListAsync(cancellationToken);
