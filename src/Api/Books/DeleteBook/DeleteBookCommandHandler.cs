@@ -2,6 +2,14 @@ namespace Catalog.Api.Books.DeleteBook;
 
 public record DeleteBookCommand(Guid Id) : ICommand<DeleteBookResult>;
 
+public class DeleteBookCommandValidator : AbstractValidator<DeleteBookCommand>
+{
+    public DeleteBookCommandValidator()
+    {
+        RuleFor(item => item.Id).NotEmpty().WithMessage("Id не может быть пустым");
+    }
+}
+
 public record DeleteBookResult(bool IsSuccess);
 
 public class DeleteBookCommandHandler(IDocumentSession session)

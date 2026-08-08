@@ -2,7 +2,7 @@ namespace Catalog.Api.Behaviors;
 
 public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
     : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : ICommand<TResponse> // upd.: только обработка команд, для валидации запросов заменить ICommand на IRequest
+    where TRequest : IRequest<TResponse> // upd.: только обработка команд, для валидации и запросов заменить ICommand на IRequest
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {

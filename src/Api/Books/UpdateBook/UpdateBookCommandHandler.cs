@@ -15,7 +15,7 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
 {
     public UpdateBookCommandValidator()
     {
-        // RuleFor(item => item.Id).NotEmpty().WithMessage("Id не может быть пустым"); // upd.: неверная валидация для Guid
+        RuleFor(item => item.Id).NotEmpty().WithMessage("Id не может быть пустым"); // верная валидация для Guid?
         RuleFor(item => item.Title).NotEmpty().WithMessage("Title не может быть пустым");
         RuleFor(item => item.Name).NotEmpty().WithMessage("Name не может быть пустым");
         RuleFor(item => item.Price).GreaterThan(0).WithMessage("Price должен быть больше 0");

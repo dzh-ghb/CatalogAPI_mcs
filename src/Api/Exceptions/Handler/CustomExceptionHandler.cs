@@ -8,7 +8,8 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
         logger.LogError(
             "Ошибка: {exceptionMessage}, время: {time}",
             exception.Message,
-            DateTime.Now
+            DateTime.UtcNow
+        // DateTime.Now
         );
 
         (string Detail, string Title, int StatusCode) details = exception switch
@@ -17,6 +18,11 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
                 exception.Message,
                 exception.GetType().Name,
                 httpContext.Response.StatusCode = StatusCodes.Status404NotFound
+            ),
+            ValidationException => (
+                exception.Message,
+                exception.GetType().Name,
+                httpContext.Response.StatusCode = StatusCodes.Status400BadRequest
             ),
             _ => (
                 exception.Message,
