@@ -8,16 +8,16 @@ public record GetBooksResponse(IEnumerable<Book> Books);
 
 public class GetBooksEndpoint : ICarterModule
 {
-    public void AddRoutes(IEndpointRouteBuilder app)
-    {
-        app.MapGet("/books", async (
-            [AsParameters] GetBooksRequest request,
-            ISender sender) =>
-        {
-            var query = request.Adapt<GetBooksQuery>();
-            var result = await sender.Send(query);
-            var response = result.Adapt<GetBooksResponse>();
-            return Results.Ok(response);
-        });
-    }
+	public void AddRoutes(IEndpointRouteBuilder app)
+	{
+		app.MapGet("/books", async (
+				[AsParameters] GetBooksRequest request,
+				ISender sender) =>
+		{
+			var query = request.Adapt<GetBooksQuery>();
+			var result = await sender.Send(query);
+			var response = result.Adapt<GetBooksResponse>();
+			return Results.Ok(response);
+		});
+	}
 }

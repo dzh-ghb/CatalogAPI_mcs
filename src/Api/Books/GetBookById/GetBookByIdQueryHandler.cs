@@ -5,10 +5,10 @@ public record GetBookByIdQuery(Guid Id) : IQuery<GetBookByIdResult>;
 
 public class GetBookByIdQueryValidator : AbstractValidator<GetBookByIdQuery>
 {
-    public GetBookByIdQueryValidator()
-    {
-        RuleFor(item => item.Id).NotEmpty().WithMessage("Id не может быть пустым");
-    }
+	public GetBookByIdQueryValidator()
+	{
+		RuleFor(item => item.Id).NotEmpty().WithMessage("Id не может быть пустым");
+	}
 }
 
 // результат обработки запроса (DTO-модель)
@@ -16,15 +16,15 @@ public record GetBookByIdResult(Book? Book);
 
 public class GetBookByIdQueryHandler(IDocumentSession session) : IQueryHandler<GetBookByIdQuery, GetBookByIdResult>
 {
-    public async Task<GetBookByIdResult> Handle(GetBookByIdQuery query, CancellationToken cancellationToken)
-    {
-        var book = await session.LoadAsync<Book>(query.Id, cancellationToken);
+	public async Task<GetBookByIdResult> Handle(GetBookByIdQuery query, CancellationToken cancellationToken)
+	{
+		var book = await session.LoadAsync<Book>(query.Id, cancellationToken);
 
-        if (book is null)
-        {
-            throw new BookNotFoundException(query.Id);
-        }
+		if (book is null)
+		{
+			throw new BookNotFoundException(query.Id);
+		}
 
-        return new GetBookByIdResult(book);
-    }
+		return new GetBookByIdResult(book);
+	}
 }

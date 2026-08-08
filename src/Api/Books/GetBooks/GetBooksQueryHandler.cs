@@ -8,14 +8,14 @@ public record GetBooksResult(IEnumerable<Book> Books);
 
 public class GetBooksQueryHandler(IDocumentSession session) : IQueryHandler<GetBooksQuery, GetBooksResult>
 {
-    public async Task<GetBooksResult> Handle(GetBooksQuery query, CancellationToken cancellationToken)
-    {
-        // await Task.Delay(TimeSpan.FromSeconds(5)); // тест мониторинга времени выполнения запросов
+	public async Task<GetBooksResult> Handle(GetBooksQuery query, CancellationToken cancellationToken)
+	{
+		// await Task.Delay(TimeSpan.FromSeconds(5)); // тест мониторинга времени выполнения запросов
 
-        var books = await session.Query<Book>()
-            // .ToListAsync(cancellationToken);
-            .ToPagedListAsync(query.PageNumber ?? 1, query.PageSize ?? 5, cancellationToken);
+		var books = await session.Query<Book>()
+				// .ToListAsync(cancellationToken);
+				.ToPagedListAsync(query.PageNumber ?? 1, query.PageSize ?? 5, cancellationToken);
 
-        return new GetBooksResult(books);
-    }
+		return new GetBooksResult(books);
+	}
 }
