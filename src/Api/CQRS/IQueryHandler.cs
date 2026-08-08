@@ -1,5 +1,5 @@
 // обработчик запросов
-namespace Api.CQRS;
+namespace Catalog.Api.CQRS;
 
 public interface IQueryHandler<in TQuery, TResponse>
     : IRequestHandler<TQuery, TResponse>

@@ -1,4 +1,4 @@
-namespace Api.Data.Seed;
+namespace Catalog.Api.Data.Seed;
 
 // класс для наполнения БД
 public class InitializeBookDatabase : IInitialData

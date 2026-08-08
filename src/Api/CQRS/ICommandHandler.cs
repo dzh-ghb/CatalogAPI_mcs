@@ -1,5 +1,5 @@
 // обработчик команд
-namespace Api.CQRS;
+namespace Catalog.Api.CQRS;
 
 // для команд, не возвращающих результат
 public interface ICommandHandle<in TCommand>

@@ -1,4 +1,4 @@
-namespace Api.Books.GetBooks;
+namespace Catalog.Api.Books.GetBooks;
 
 // модель запроса (DTO-модель)
 public record GetBooksQuery(int? PageNumber = 1, int? PageSize = 5) : IQuery<GetBooksResult>;

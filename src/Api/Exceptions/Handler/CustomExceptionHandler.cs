@@ -1,4 +1,4 @@
-namespace Api.Exceptions.Handler;
+namespace Catalog.Api.Exceptions.Handler;
 
 // обработчик исключений
 public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IExceptionHandler

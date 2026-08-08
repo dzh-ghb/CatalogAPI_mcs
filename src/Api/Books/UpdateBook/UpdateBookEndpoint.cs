@@ -1,4 +1,4 @@
-namespace Api.Books.UpdateBook;
+namespace Catalog.Api.Books.UpdateBook;
 
 public record UpdateBookRequest(
     Guid Id,

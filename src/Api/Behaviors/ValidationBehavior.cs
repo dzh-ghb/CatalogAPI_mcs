@@ -1,4 +1,4 @@
-namespace Api.Behaviors;
+namespace Catalog.Api.Behaviors;
 
 public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
     : IPipelineBehavior<TRequest, TResponse>

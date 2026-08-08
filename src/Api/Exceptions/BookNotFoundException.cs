@@ -1,4 +1,4 @@
-namespace Api.Exceptions;
+namespace Catalog.Api.Exceptions;
 
 public class BookNotFoundException : Exception
 {

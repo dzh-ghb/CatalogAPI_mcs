@@ -1,4 +1,4 @@
-namespace Api.Books.GetBooks;
+namespace Catalog.Api.Books.GetBooks;
 
 // модель запроса (для пагинации)
 public record GetBooksRequest(int? PageNumber = 1, int? PageSize = 5);

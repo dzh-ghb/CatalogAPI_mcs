@@ -1,4 +1,4 @@
-namespace Api.Behaviors;
+namespace Catalog.Api.Behaviors;
 
 public class TimeoutBehavior<TRequest, TResponse>(ILogger<TimeoutBehavior<TRequest, TResponse>> logger)
     : IPipelineBehavior<TRequest, TResponse>

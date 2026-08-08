@@ -1,4 +1,4 @@
-namespace Api.Books.AppendBook;
+namespace Catalog.Api.Books.AppendBook;
 
 // модель запроса
 public record AppendBookRequest(

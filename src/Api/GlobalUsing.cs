@@ -9,9 +9,9 @@ global using Microsoft.AspNetCore.Diagnostics;
 global using Microsoft.AspNetCore.Mvc;
 global using System.Diagnostics;
 
-global using Api.Data.Seed;
-global using Api.Model;
-global using Api.CQRS;
-global using Api.Behaviors;
-global using Api.Exceptions.Handler;
-global using Api.Exceptions;
+global using Catalog.Api.Data.Seed;
+global using Catalog.Api.Model;
+global using Catalog.Api.CQRS;
+global using Catalog.Api.Behaviors;
+global using Catalog.Api.Exceptions.Handler;
+global using Catalog.Api.Exceptions;

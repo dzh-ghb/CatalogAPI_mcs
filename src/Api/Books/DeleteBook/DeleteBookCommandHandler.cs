@@ -1,4 +1,4 @@
-namespace Api.Books.DeleteBook;
+namespace Catalog.Api.Books.DeleteBook;
 
 public record DeleteBookCommand(Guid Id) : ICommand<DeleteBookResult>;
 

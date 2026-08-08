@@ -1,4 +1,4 @@
-namespace Api.Data.Seed;
+namespace Catalog.Api.Data.Seed;
 
 public class InitialData
 {

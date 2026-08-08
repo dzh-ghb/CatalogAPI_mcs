@@ -1,4 +1,4 @@
-namespace Api.Model;
+namespace Catalog.Api.Model;
 
 public class Book
 {

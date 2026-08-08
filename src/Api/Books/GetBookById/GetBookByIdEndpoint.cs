@@ -1,4 +1,4 @@
-namespace Api.Books.GetBookById;
+namespace Catalog.Api.Books.GetBookById;
 
 // модель запроса
 // public record GetBookByIdRequest(Guid Id); // нужен для использования данных из тела запроса (body) или query-параметров

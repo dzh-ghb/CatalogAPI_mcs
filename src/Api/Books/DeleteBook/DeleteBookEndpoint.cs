@@ -1,4 +1,4 @@
-namespace Api.Books.DeleteBook;
+namespace Catalog.Api.Books.DeleteBook;
 
 // public record DeleteBookRequest(Guid Id); // нужен для использования данных из тела запроса (body) или query-параметров
 

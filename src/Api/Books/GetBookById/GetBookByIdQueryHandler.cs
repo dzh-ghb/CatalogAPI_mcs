@@ -1,4 +1,4 @@
-namespace Api.Books.GetBookById;
+namespace Catalog.Api.Books.GetBookById;
 
 // модель запроса (DTO-модель)
 public record GetBookByIdQuery(Guid Id) : IQuery<GetBookByIdResult>;
