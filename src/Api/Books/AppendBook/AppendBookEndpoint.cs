@@ -25,6 +25,10 @@ public class AppendBookEndpoint : ICarterModule
 			var result = await sender.Send(command);
 			var response = result.Adapt<AppendBookResponse>();
 			return Results.Ok(response);
-		});
+		})
+		.WithTags("Books")
+		.WithSummary("Добавление книги в каталог") // описание
+		.Produces<AppendBookResponse>() // тип возвращаемого значения
+		.ProducesProblem(StatusCodes.Status400BadRequest); // вероятные проблемы
 	}
 }

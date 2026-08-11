@@ -17,6 +17,9 @@ public class DeleteBookEndpoint : ICarterModule
 			var result = await sender.Send(command);
 			var response = result.Adapt<DeleteBookResponse>();
 			return Results.Ok(response);
-		});
+		})
+		.WithTags("Books")
+		.WithSummary("Удаление книги из каталога")
+		.Produces<DeleteBookResponse>();
 	}
 }

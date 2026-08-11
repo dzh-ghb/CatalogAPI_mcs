@@ -19,6 +19,10 @@ public class GetBookByIdEndpoint : ICarterModule
 			var result = await sender.Send(query);
 			var response = result.Adapt<GetBookByIdResponse>();
 			return Results.Ok(response);
-		});
+		})
+		.WithTags("Books")
+		.WithSummary("Получение книги по идентификатору")
+		.Produces<GetBookByIdResponse>()
+		.ProducesProblem(StatusCodes.Status404NotFound);
 	}
 }

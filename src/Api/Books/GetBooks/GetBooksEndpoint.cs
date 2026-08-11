@@ -18,6 +18,9 @@ public class GetBooksEndpoint : ICarterModule
 			var result = await sender.Send(query);
 			var response = result.Adapt<GetBooksResponse>();
 			return Results.Ok(response);
-		});
+		})
+		.WithTags("Books")
+		.WithSummary("Получение списка книг с пагинацией")
+		.Produces<GetBooksResponse>();
 	}
 }

@@ -24,6 +24,11 @@ public class UpdateBookEndpoint : ICarterModule
 			var result = await sender.Send(command);
 			var response = result.Adapt<UpdateBookResponse>();
 			return Results.Ok(response);
-		});
+		})
+		.WithTags("Books")
+		.WithSummary("Обновление данных о книге")
+		.Produces<UpdateBookResponse>()
+		.ProducesProblem(StatusCodes.Status400BadRequest)
+		.ProducesProblem(StatusCodes.Status404NotFound);
 	}
 }

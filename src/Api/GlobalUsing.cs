@@ -8,6 +8,7 @@ global using FluentValidation;
 global using Microsoft.AspNetCore.Diagnostics;
 global using Microsoft.AspNetCore.Mvc;
 global using System.Diagnostics;
+global using Scalar.AspNetCore;
 
 global using Catalog.Api.Data.Seed;
 global using Catalog.Api.Model;
