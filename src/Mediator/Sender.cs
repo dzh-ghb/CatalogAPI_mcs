@@ -31,7 +31,7 @@ public abstract class RequestHandlerWrapper<TResponse>
 		CancellationToken cancellationToken = default);
 }
 
-// реализация с обобщением и по запросу, и по ответу
+// логика работы всех pipeline behavior по порядку (реализация с обобщением и по запросу, и по ответу)
 public class RequestHandlerWrapper<TRequest, TResponse>
 	: RequestHandlerWrapper<TResponse>
 	where TRequest : IRequest<TResponse>
@@ -43,6 +43,22 @@ public class RequestHandlerWrapper<TRequest, TResponse>
 	{
 		var handler = services.GetRequiredService<IRequestHandler<TRequest, TResponse>>();
 
-		return handler.Handle((TRequest)request, cancellationToken);
+		var typedRequest = (TRequest)request;
+
+		// конечная точка пайплайна - обработчик
+		RequestHandlerDelegate<TResponse> pipeline =
+			() => handler.Handle(typedRequest, cancellationToken);
+
+		// все поведения от запроса до ответа в обратном порядке
+		var items = services.GetServices<IPipelineBehavior<TRequest, TResponse>>()
+		.Reverse();
+
+		foreach (var behavior in items)
+		{
+			var next = pipeline;
+			pipeline = () => behavior.Handle(typedRequest, next, cancellationToken);
+		}
+
+		return pipeline();
 	}
 }
