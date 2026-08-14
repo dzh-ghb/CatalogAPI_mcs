@@ -14,11 +14,15 @@
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
     <PackageReference Include="Mapster" Version="10.0.11" />
     <PackageReference Include="Marten" Version="9.22.5" />
-    <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
     <PackageReference Include="Microsoft.OpenApi" Version="2.11.0" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.16.18" />
+    <!--<PackageReference Include="MediatR" Version="12.4.1" />-->
     <!-- <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" /> -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mediator\Mediator.csproj" />
   </ItemGroup>
 
 </Project>

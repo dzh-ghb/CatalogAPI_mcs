@@ -1,4 +1,4 @@
-global using MediatR;
+// global using MediatR;
 global using Carter;
 global using Mapster;
 global using Marten;
@@ -16,3 +16,5 @@ global using Catalog.Api.CQRS;
 global using Catalog.Api.Behaviors;
 global using Catalog.Api.Exceptions.Handler;
 global using Catalog.Api.Exceptions;
+
+global using Catalog.Mediator;

@@ -16,7 +16,8 @@ builder.Services.AddMarten(option =>
 var assembly = typeof(Program).Assembly;
 
 // регистрация MediatR
-builder.Services.AddMediatR(config =>
+// builder.Services.AddMediatR(config =>
+builder.Services.AddMediator(config =>
 {
 	config.RegisterServicesFromAssembly(assembly);
 	config.AddOpenBehavior(typeof(TimeoutBehavior<,>));

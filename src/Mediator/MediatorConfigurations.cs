@@ -1,5 +1,3 @@
-using System.Reflection;
-
 namespace Catalog.Mediator;
 
 // класс сборок и сквозных подключений
