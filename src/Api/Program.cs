@@ -11,16 +11,24 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddMarten(option =>
 {
 	option.Connection(connectionString);
-}).UseLightweightSessions().InitializeWith<InitializeBookDatabase>();
+})
+.UseLightweightSessions()
+.InitializeWith<InitializeBookDatabase>()
+.IntegrateWithWolverine(); // мост для работы транзакционного middleware
 
 var assembly = typeof(Program).Assembly;
 
-// регистрация MediatR
-builder.Services.AddMediatR(config =>
+// // регистрация MediatR
+// builder.Services.AddMediatR(config =>
+// {
+// 	config.RegisterServicesFromAssembly(assembly);
+// 	config.AddOpenBehavior(typeof(TimeoutBehavior<,>));
+// 	config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+// });
+
+builder.Host.UseWolverine(opts =>
 {
-	config.RegisterServicesFromAssembly(assembly);
-	config.AddOpenBehavior(typeof(TimeoutBehavior<,>));
-	config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+	opts.Policies.AutoApplyTransactions(); // транзакционный middleware (для работы обработчиков и автосохранения данных)
 });
 
 builder.Services.AddValidatorsFromAssembly(assembly);

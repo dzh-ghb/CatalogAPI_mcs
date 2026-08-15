@@ -1,4 +1,3 @@
-global using MediatR;
 global using Carter;
 global using Mapster;
 global using Marten;
@@ -9,10 +8,11 @@ global using Microsoft.AspNetCore.Diagnostics;
 global using Microsoft.AspNetCore.Mvc;
 global using System.Diagnostics;
 global using Scalar.AspNetCore;
+global using Wolverine;
+global using Wolverine.Marten;
 
 global using Catalog.Api.Data.Seed;
 global using Catalog.Api.Model;
 global using Catalog.Api.CQRS;
-global using Catalog.Api.Behaviors;
 global using Catalog.Api.Exceptions.Handler;
 global using Catalog.Api.Exceptions;

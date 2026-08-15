@@ -1,7 +1,7 @@
 // инфраструктура для запросов
 namespace Catalog.Api.CQRS;
 
-public interface IQuery<out TResponse> : IRequest<TResponse>
+public interface IQuery<TResponse>
 		where TResponse : notnull
 {
 }

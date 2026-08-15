@@ -12,10 +12,10 @@ public class GetBooksEndpoint : ICarterModule
 	{
 		app.MapGet("/books", async (
 				[AsParameters] GetBooksRequest request,
-				ISender sender) =>
+				IMessageBus bus) =>
 		{
 			var query = request.Adapt<GetBooksQuery>();
-			var result = await sender.Send(query);
+			var result = await bus.InvokeAsync<GetBooksResult>(query);
 			var response = result.Adapt<GetBooksResponse>();
 			return Results.Ok(response);
 		})

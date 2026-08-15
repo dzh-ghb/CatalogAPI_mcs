@@ -6,15 +6,20 @@ public record GetBooksQuery(int? PageNumber = 1, int? PageSize = 5) : IQuery<Get
 // результат обработки запроса (DTO-модель)
 public record GetBooksResult(IEnumerable<Book> Books);
 
-public class GetBooksQueryHandler(IDocumentSession session) : IQueryHandler<GetBooksQuery, GetBooksResult>
+public class GetBooksQueryHandler
 {
-	public async Task<GetBooksResult> Handle(GetBooksQuery query, CancellationToken cancellationToken)
+	public static async Task<GetBooksResult> Handle(
+		GetBooksQuery query,
+		IDocumentSession session,
+		CancellationToken cancellationToken)
 	{
 		// await Task.Delay(TimeSpan.FromSeconds(5)); // тест мониторинга времени выполнения запросов
 
 		var books = await session.Query<Book>()
-				// .ToListAsync(cancellationToken);
-				.ToPagedListAsync(query.PageNumber ?? 1, query.PageSize ?? 5, cancellationToken);
+				.ToPagedListAsync(
+					query.PageNumber ?? 1,
+					query.PageSize ?? 5,
+					cancellationToken);
 
 		return new GetBooksResult(books);
 	}

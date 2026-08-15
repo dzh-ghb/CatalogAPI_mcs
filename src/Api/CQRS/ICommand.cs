@@ -1,12 +1,6 @@
 // инфраструктура для команд
 namespace Catalog.Api.CQRS;
 
-// для команд, не возвращающих результат
-public interface ICommand : ICommand<Unit>
-{
-}
-
-// для команд, возвращающих результат
-public interface ICommand<out TResponse> : IRequest<TResponse>
+public interface ICommand<TResponse>
 {
 }

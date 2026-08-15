@@ -12,22 +12,21 @@ public class DeleteBookCommandValidator : AbstractValidator<DeleteBookCommand>
 
 public record DeleteBookResult(bool IsSuccess);
 
-public class DeleteBookCommandHandler(IDocumentSession session)
-		: ICommandHandler<DeleteBookCommand, DeleteBookResult>
+public class DeleteBookCommandHandler
 {
-	public async Task<DeleteBookResult> Handle(DeleteBookCommand command, CancellationToken cancellationToken)
+	public static async Task<DeleteBookResult> Handle(
+		DeleteBookCommand command,
+		IDocumentSession session,
+		CancellationToken cancellationToken)
 	{
 		var book = await session.LoadAsync<Book>(command.Id, cancellationToken);
 
 		if (book is null)
 		{
-			// throw new BookNotFoundException(command.Id);
 			return new DeleteBookResult(false);
 		}
 
-		// command.Adapt(book.Id);
-		session.Delete<Book>(command.Id);
-		await session.SaveChangesAsync(cancellationToken);
+		session.Delete(command.Id);
 
 		return new DeleteBookResult(true);
 	}

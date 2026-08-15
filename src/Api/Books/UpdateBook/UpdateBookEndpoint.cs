@@ -18,10 +18,10 @@ public class UpdateBookEndpoint : ICarterModule
 	{
 		app.MapPut("/books", async (
 				UpdateBookRequest request,
-				ISender sender) =>
+				IMessageBus bus) =>
 		{
 			var command = request.Adapt<UpdateBookCommand>();
-			var result = await sender.Send(command);
+			var result = await bus.InvokeAsync<UpdateBookResult>(command);
 			var response = result.Adapt<UpdateBookResponse>();
 			return Results.Ok(response);
 		})

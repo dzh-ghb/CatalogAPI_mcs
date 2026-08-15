@@ -13,10 +13,10 @@ public class GetBookByIdEndpoint : ICarterModule
 		// id приходит из route-параметра
 		app.MapGet("/books/{id}", async (
 				Guid id,
-				ISender sender) =>
+				IMessageBus bus) =>
 		{
 			var query = new GetBookByIdQuery(id);
-			var result = await sender.Send(query);
+			var result = await bus.InvokeAsync<GetBookByIdResult>(query);
 			var response = result.Adapt<GetBookByIdResponse>();
 			return Results.Ok(response);
 		})

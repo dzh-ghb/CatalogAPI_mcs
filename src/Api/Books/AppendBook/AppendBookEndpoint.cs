@@ -19,10 +19,10 @@ public class AppendBookEndpoint : ICarterModule
 	{
 		app.MapPost("/books", async (
 				AppendBookRequest request,
-				ISender sender) =>
+				IMessageBus bus) =>
 		{
 			var command = request.Adapt<AppendBookCommand>();
-			var result = await sender.Send(command);
+			var result = await bus.InvokeAsync<AppendBookResult>(command);
 			var response = result.Adapt<AppendBookResponse>();
 			return Results.Ok(response);
 		})

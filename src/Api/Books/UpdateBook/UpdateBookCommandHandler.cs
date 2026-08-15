@@ -25,10 +25,12 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
 
 public record UpdateBookResult(bool IsSuccess);
 
-public class UpdateBookCommandHandler(IDocumentSession session)
-		: ICommandHandler<UpdateBookCommand, UpdateBookResult>
+public class UpdateBookCommandHandler
 {
-	public async Task<UpdateBookResult> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
+	public static async Task<UpdateBookResult> Handle(
+		UpdateBookCommand command,
+		IDocumentSession session,
+		CancellationToken cancellationToken)
 	{
 		var book = await session.LoadAsync<Book>(command.Id, cancellationToken);
 
@@ -39,7 +41,6 @@ public class UpdateBookCommandHandler(IDocumentSession session)
 
 		command.Adapt(book);
 		session.Update(book);
-		await session.SaveChangesAsync(cancellationToken);
 
 		return new UpdateBookResult(true);
 	}

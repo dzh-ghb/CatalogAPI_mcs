@@ -14,9 +14,12 @@ public class GetBookByIdQueryValidator : AbstractValidator<GetBookByIdQuery>
 // результат обработки запроса (DTO-модель)
 public record GetBookByIdResult(Book? Book);
 
-public class GetBookByIdQueryHandler(IDocumentSession session) : IQueryHandler<GetBookByIdQuery, GetBookByIdResult>
+public class GetBookByIdQueryHandler
 {
-	public async Task<GetBookByIdResult> Handle(GetBookByIdQuery query, CancellationToken cancellationToken)
+	public static async Task<GetBookByIdResult> Handle(
+		GetBookByIdQuery query,
+		IDocumentSession session,
+		CancellationToken cancellationToken)
 	{
 		var book = await session.LoadAsync<Book>(query.Id, cancellationToken);
 

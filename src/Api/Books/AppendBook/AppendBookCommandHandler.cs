@@ -25,9 +25,11 @@ public class AppendBookCommandValidator : AbstractValidator<AppendBookCommand>
 // модель ответа
 public record AppendBookResult(Guid Id);
 
-public class AppendBookCommandHandler(IDocumentSession session) : ICommandHandler<AppendBookCommand, AppendBookResult>
+public class AppendBookCommandHandler/*(IDocumentSession session) // не нужно - связь Wolverine + Marten*/
 {
-	public async Task<AppendBookResult> Handle(AppendBookCommand command, CancellationToken cancellationToken)
+	public static AppendBookResult Handle(
+		AppendBookCommand command, // тип обрабатываемого сообщения обязательно первый параметр
+		IDocumentSession session)
 	{
 		var book = new Book
 		{
@@ -40,7 +42,7 @@ public class AppendBookCommandHandler(IDocumentSession session) : ICommandHandle
 		};
 
 		session.Store(book);
-		await session.SaveChangesAsync(cancellationToken);
+		// await session.SaveChangesAsync(cancellationToken); // не нужно - настроен транзакционного middleware
 
 		return new AppendBookResult(book.Id);
 	}

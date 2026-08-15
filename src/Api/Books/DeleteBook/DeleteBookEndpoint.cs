@@ -11,10 +11,10 @@ public class DeleteBookEndpoint : ICarterModule
 		// id приходит из route-параметра
 		app.MapDelete("/books/{id}", async (
 				Guid id,
-				ISender sender) =>
+				IMessageBus bus) =>
 		{
 			var command = new DeleteBookCommand(id);
-			var result = await sender.Send(command);
+			var result = await bus.InvokeAsync<DeleteBookResult>(command);
 			var response = result.Adapt<DeleteBookResponse>();
 			return Results.Ok(response);
 		})
