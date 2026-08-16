@@ -29,6 +29,8 @@ var assembly = typeof(Program).Assembly;
 builder.Host.UseWolverine(opts =>
 {
 	opts.Policies.AutoApplyTransactions(); // транзакционный middleware (для работы обработчиков и автосохранения данных)
+	opts.UseFluentValidation(); // middleware валидации
+	opts.Policies.AddMiddleware<RequestTimingMiddleware>(); // middleware мониторинга времени выполнения запросов
 });
 
 builder.Services.AddValidatorsFromAssembly(assembly);
