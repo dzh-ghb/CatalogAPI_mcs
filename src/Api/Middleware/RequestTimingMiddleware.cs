@@ -1,11 +1,14 @@
 namespace Catalog.Api.Middleware;
 
+// middleware по конвенции Wolverine
 public class RequestTimingMiddleware
 {
 	private readonly Stopwatch timer = new();
 
+	// вызов до обработки сообщения
 	public void Before() => timer.Start();
 
+	// вызов в любом случае после обработки
 	public void Finally(ILogger logger, Envelope envelope)
 	{
 		timer.Stop();

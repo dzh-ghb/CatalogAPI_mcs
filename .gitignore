@@ -6,6 +6,7 @@ appsettings.Development.json
 appsettings.json
 
 Queries
+Internal
 
 # dependencies
 node_modules

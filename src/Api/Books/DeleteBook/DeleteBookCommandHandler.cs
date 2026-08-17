@@ -26,7 +26,7 @@ public class DeleteBookCommandHandler
 			return new DeleteBookResult(false);
 		}
 
-		session.Delete(command.Id);
+		session.Delete<Book>(command.Id);
 
 		return new DeleteBookResult(true);
 	}

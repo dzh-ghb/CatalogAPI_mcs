@@ -13,7 +13,7 @@ public class GetBooksQueryHandler
 		IDocumentSession session,
 		CancellationToken cancellationToken)
 	{
-		await Task.Delay(TimeSpan.FromSeconds(2)); // тест мониторинга времени выполнения запросов
+		// await Task.Delay(TimeSpan.FromSeconds(2)); // тест мониторинга времени выполнения запросов
 
 		var books = await session.Query<Book>()
 				.ToPagedListAsync(

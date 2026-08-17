@@ -55,3 +55,4 @@ if (app.Environment.IsDevelopment())
 }
 
 app.Run();
+// return await app.RunJasperFxCommands(args); // для демонстрации работы JasperFx

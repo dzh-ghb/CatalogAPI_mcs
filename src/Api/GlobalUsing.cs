@@ -11,6 +11,7 @@ global using Scalar.AspNetCore;
 global using Wolverine;
 global using Wolverine.Marten;
 global using Wolverine.FluentValidation;
+// global using JasperFx;
 
 global using Catalog.Api.Data.Seed;
 global using Catalog.Api.Model;
