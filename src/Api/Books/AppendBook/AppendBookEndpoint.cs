@@ -21,9 +21,9 @@ public class AppendBookEndpoint : ICarterModule
 				AppendBookRequest request,
 				IMessageBus bus) =>
 		{
-			var command = request.Adapt<AppendBookCommand>();
+			var command = request.ToCommand();
 			var result = await bus.InvokeAsync<AppendBookResult>(command);
-			var response = result.Adapt<AppendBookResponse>();
+			var response = result.ToResponse();
 			return Results.Ok(response);
 		})
 		.WithTags("Books")

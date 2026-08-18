@@ -15,7 +15,7 @@ public class DeleteBookEndpoint : ICarterModule
 		{
 			var command = new DeleteBookCommand(id);
 			var result = await bus.InvokeAsync<DeleteBookResult>(command);
-			var response = result.Adapt<DeleteBookResponse>();
+			var response = result.ToResponse();
 			return Results.Ok(response);
 		})
 		.WithTags("Books")

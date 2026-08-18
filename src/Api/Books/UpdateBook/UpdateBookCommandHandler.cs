@@ -39,7 +39,7 @@ public class UpdateBookCommandHandler
 			throw new BookNotFoundException(command.Id);
 		}
 
-		command.Adapt(book);
+		command.ApplyTo(book); // перенос полей команды в уже существующую в БД книгу
 		session.Update(book);
 
 		return new UpdateBookResult(true);

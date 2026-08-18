@@ -17,7 +17,7 @@ public class GetBookByIdEndpoint : ICarterModule
 		{
 			var query = new GetBookByIdQuery(id);
 			var result = await bus.InvokeAsync<GetBookByIdResult>(query);
-			var response = result.Adapt<GetBookByIdResponse>();
+			var response = result.ToResponse();
 			return Results.Ok(response);
 		})
 		.WithTags("Books")

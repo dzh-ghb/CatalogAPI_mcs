@@ -20,9 +20,9 @@ public class UpdateBookEndpoint : ICarterModule
 				UpdateBookRequest request,
 				IMessageBus bus) =>
 		{
-			var command = request.Adapt<UpdateBookCommand>();
+			var command = request.ToCommand();
 			var result = await bus.InvokeAsync<UpdateBookResult>(command);
-			var response = result.Adapt<UpdateBookResponse>();
+			var response = result.ToResponse();
 			return Results.Ok(response);
 		})
 		.WithTags("Books")

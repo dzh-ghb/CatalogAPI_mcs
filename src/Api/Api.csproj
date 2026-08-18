@@ -5,17 +5,27 @@
     <RootNamespace>Catalog.Api</RootNamespace>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- для кодогенерации мапперов -->
+    <!-- <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles> -->
+    <!-- <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath> -->
   </PropertyGroup>
+
+  <!-- для кодогенерации мапперов -->
+  <!-- <ItemGroup>
+    <Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
+  </ItemGroup> -->
 
   <ItemGroup>
     <PackageReference Include="Carter" Version="10.0.0" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
-    <PackageReference Include="Mapster" Version="10.0.11" />
+    <!-- <PackageReference Include="Mapster" Version="10.0.11" /> -->
     <PackageReference Include="Marten" Version="9.23.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
     <PackageReference Include="Microsoft.OpenApi" Version="2.11.0" />
+    <PackageReference Include="Riok.Mapperly" Version="4.3.1" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.16.18" />
     <PackageReference Include="WolverineFx" Version="6.28.0" />
     <PackageReference Include="WolverineFx.FluentValidation" Version="6.28.0" />

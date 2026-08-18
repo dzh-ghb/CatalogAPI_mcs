@@ -14,9 +14,9 @@ public class GetBooksEndpoint : ICarterModule
 				[AsParameters] GetBooksRequest request,
 				IMessageBus bus) =>
 		{
-			var query = request.Adapt<GetBooksQuery>();
+			var query = request.ToQuery();
 			var result = await bus.InvokeAsync<GetBooksResult>(query);
-			var response = result.Adapt<GetBooksResponse>();
+			var response = result.ToResponse();
 			return Results.Ok(response);
 		})
 		.WithTags("Books")

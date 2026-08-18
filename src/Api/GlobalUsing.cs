@@ -1,5 +1,4 @@
 global using Carter;
-global using Mapster;
 global using Marten;
 global using Marten.Schema;
 global using Marten.Pagination;
@@ -11,6 +10,8 @@ global using Scalar.AspNetCore;
 global using Wolverine;
 global using Wolverine.Marten;
 global using Wolverine.FluentValidation;
+global using Riok.Mapperly.Abstractions;
+// global using Mapster;
 // global using JasperFx;
 
 global using Catalog.Api.Data.Seed;
