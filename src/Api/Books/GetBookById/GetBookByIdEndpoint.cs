@@ -16,9 +16,19 @@ public class GetBookByIdEndpoint : ICarterModule
 				IMessageBus bus) =>
 		{
 			var query = new GetBookByIdQuery(id);
-			var result = await bus.InvokeAsync<GetBookByIdResult>(query);
-			var response = result.ToResponse();
-			return Results.Ok(response);
+			var result = await bus.InvokeAsync<Result<GetBookByIdResult>>(query);
+			// var response = result.ToResponse();
+			// return Results.Ok(response);
+			return result.Match<IResult>(
+				ok => Results.Ok(ok.ToResponse()),
+				error => error.TypeError switch
+				{
+					ErrorType.NotFound => Results.NotFound(error.Message),
+					ErrorType.Validation => Results.BadRequest(error.Message),
+					ErrorType.Conflict => Results.Conflict(error.Message),
+					_ => Results.Problem(error.Message)
+				}
+			);
 		})
 		.WithTags("Books")
 		.WithSummary("Получение книги по идентификатору")

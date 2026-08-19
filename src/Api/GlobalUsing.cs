@@ -20,3 +20,4 @@ global using Catalog.Api.CQRS;
 global using Catalog.Api.Exceptions.Handler;
 global using Catalog.Api.Exceptions;
 global using Catalog.Api.Middleware;
+global using Catalog.Api.Common;
