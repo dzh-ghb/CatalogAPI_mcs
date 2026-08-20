@@ -16,17 +16,17 @@ public class GetBookByIdEndpoint : ICarterModule
 				IMessageBus bus) =>
 		{
 			var query = new GetBookByIdQuery(id);
-			var result = await bus.InvokeAsync<Result<GetBookByIdResult>>(query);
+			var result = await bus.InvokeAsync<ErrorOr<GetBookByIdResult>>(query);
 			// var response = result.ToResponse();
 			// return Results.Ok(response);
-			return result.Match<IResult>(
+			return result.MatchFirst<IResult>(
 				ok => Results.Ok(ok.ToResponse()),
-				error => error.TypeError switch
+				error => error.Type switch
 				{
-					ErrorType.NotFound => Results.NotFound(error.Message),
-					ErrorType.Validation => Results.BadRequest(error.Message),
-					ErrorType.Conflict => Results.Conflict(error.Message),
-					_ => Results.Problem(error.Message)
+					ErrorType.NotFound => Results.NotFound(error.Description),
+					ErrorType.Validation => Results.BadRequest(error.Description),
+					ErrorType.Conflict => Results.Conflict(error.Description),
+					_ => Results.Problem(error.Description)
 				}
 			);
 		})

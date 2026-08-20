@@ -16,7 +16,7 @@ public record GetBookByIdResult(Book? Book);
 
 public class GetBookByIdQueryHandler
 {
-	public static async Task<Result<GetBookByIdResult>> Handle(
+	public static async Task<ErrorOr<GetBookByIdResult>> Handle(
 		GetBookByIdQuery query,
 		IDocumentSession session,
 		CancellationToken cancellationToken)
@@ -31,7 +31,7 @@ public class GetBookByIdQueryHandler
 
 		// демо применения паттерна Result
 		return book is null ?
-			Result<GetBookByIdResult>.NotFound($"Книга с id '{query.Id}' не существует") :
-			Result<GetBookByIdResult>.Success(new GetBookByIdResult(book));
+			Error.NotFound(description: $"Книга с id '{query.Id}' не существует") :
+			new GetBookByIdResult(book);
 	}
 }

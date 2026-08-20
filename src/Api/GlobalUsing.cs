@@ -11,6 +11,7 @@ global using Wolverine;
 global using Wolverine.Marten;
 global using Wolverine.FluentValidation;
 global using Riok.Mapperly.Abstractions;
+global using ErrorOr;
 // global using Mapster;
 // global using JasperFx;
 
@@ -20,4 +21,4 @@ global using Catalog.Api.CQRS;
 global using Catalog.Api.Exceptions.Handler;
 global using Catalog.Api.Exceptions;
 global using Catalog.Api.Middleware;
-global using Catalog.Api.Common;
+// global using Catalog.Api.Common;
