@@ -23,12 +23,8 @@ public class GetBooksByWordQueryHandler
 		IDocumentSession session,
 		CancellationToken cancellationToken)
 	{
-		var word = query.Term;
-
 		var books = await session.Query<Book>()
-			.Where(item => item.Title.Contains(word, StringComparison.OrdinalIgnoreCase) ||
-				item.Name.Contains(word, StringComparison.OrdinalIgnoreCase) ||
-				item.Description.Contains(word, StringComparison.OrdinalIgnoreCase))
+			.Where(item => item.WebStyleSearch(query.Term, "russian"))  // полнотекстовый поиск в веб-стиле - «слово -исключение»
 			.ToPagedListAsync(
 				query.PageNumber ?? 1,
 				query.PageSize ?? 5,

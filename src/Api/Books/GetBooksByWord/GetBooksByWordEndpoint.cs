@@ -20,7 +20,8 @@ public class GetBooksByWordEndpoint : ICarterModule
 			return Results.Ok(response);
 		})
 		.WithTags("Books")
-		.WithSummary("Поиск и получение книг по слову с пагинацией")
-		.Produces<GetBooksByWordResponse>();
+		.WithSummary("Поиск книг по слову в названии/авторе/описании (с поддержкой пагинации)")
+		.Produces<GetBooksByWordResponse>()
+		.ProducesValidationProblem();
 	}
 }

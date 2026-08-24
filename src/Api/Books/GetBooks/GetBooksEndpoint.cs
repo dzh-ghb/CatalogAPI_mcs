@@ -20,7 +20,7 @@ public class GetBooksEndpoint : ICarterModule
 			return Results.Ok(response);
 		})
 		.WithTags("Books")
-		.WithSummary("Получение списка книг с пагинацией")
+		.WithSummary("Получение списка книг (с поддержкой пагинации)")
 		.Produces<GetBooksResponse>();
 	}
 }

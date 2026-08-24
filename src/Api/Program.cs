@@ -11,6 +11,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddMarten(option =>
 {
 	option.Connection(connectionString);
+	option.Schema.For<Book>().FullTextIndex("russian"); // полнотекстовый индекс для Book с языковым словарем
 })
 .UseLightweightSessions()
 .InitializeWith<InitializeBookDatabase>()
