@@ -31,15 +31,13 @@ public class AppendBookCommandHandler/*(IDocumentSession session) // не нуж
 		AppendBookCommand command, // тип обрабатываемого сообщения обязательно первый параметр
 		IDocumentSession session)
 	{
-		var book = new Book
-		{
-			Title = command.Title,
-			Name = command.Name,
-			Description = command.Description,
-			ImageUrl = command.ImageUrl,
-			Price = command.Price,
-			Category = command.Category
-		};
+		var book = Book.Create(
+			command.Title,
+			command.Name,
+			command.Description,
+			command.ImageUrl,
+			command.Price,
+			command.Category);
 
 		session.Store(book);
 		// await session.SaveChangesAsync(cancellationToken); // не нужно - настроен транзакционного middleware

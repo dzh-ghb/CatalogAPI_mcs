@@ -8,7 +8,4 @@ public static partial class UpdateBookMapper
 
 	public static partial UpdateBookResponse ToResponse(
 		this UpdateBookResult result);
-
-	public static partial void ApplyTo(
-		this UpdateBookCommand command, Book book);
 }

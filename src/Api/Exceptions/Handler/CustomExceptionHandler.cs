@@ -19,6 +19,11 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
 					exception.GetType().Name,
 					httpContext.Response.StatusCode = StatusCodes.Status404NotFound
 			),
+			BookDomainException => (
+					exception.Message,
+					exception.GetType().Name,
+					httpContext.Response.StatusCode = StatusCodes.Status400BadRequest
+			),
 			ValidationException => (
 					exception.Message,
 					exception.GetType().Name,
