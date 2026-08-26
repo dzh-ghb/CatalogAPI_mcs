@@ -1,3 +1,5 @@
+using Marten.Newtonsoft;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // для подключения Swagger
@@ -11,6 +13,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddMarten(option =>
 {
 	option.Connection(connectionString);
+	option.UseNewtonsoftForSerialization( // разрешение использования приватных конструкторов и сеттеров при десериализации
+		nonPublicMembersStorage: Weasel.Core.NonPublicMembersStorage.All
+	);
 	option.Schema.For<Book>().FullTextIndex("russian"); // полнотекстовый индекс для Book с языковым словарем
 })
 .UseLightweightSessions()

@@ -3,22 +3,26 @@ namespace Catalog.Api.Model;
 // TODO: запретить создание через конструктор (new Book {...})?
 public class Book
 {
-	public Guid Id { get; set; }
-	public string Title { get; set; } = default!;
-	public string Name { get; set; } = default!;
-	public string Description { get; set; } = default!;
-	public string ImageUrl { get; set; } = default!;
-	public decimal Price { get; set; } = default!;
-	public List<string> Category { get; set; } = new();
+	public Guid Id { get; private set; }
+	public string Title { get; private set; } = default!;
+	public string Name { get; private set; } = default!;
+	public string Description { get; private set; } = default!;
+	public string ImageUrl { get; private set; } = default!;
+	public decimal Price { get; private set; } = default!;
+	public List<string> Category { get; private set; } = new();
 
-	// фабричный метод (правило создания модели, единственная возможность создания книг)
+	// приватный конструктор - запрет создания экземпляров, кроме как через фабрику Book.Create
+	private Book() { }
+
+	// фабричный/доменный метод (правило создания модели, единственная возможность создания книг)
 	public static Book Create(
 		string title,
 		string name,
 		string description,
 		string imageUrl,
 		decimal price,
-		List<string> category)
+		List<string> category,
+		Guid? id = null) // id - необязательный параметр
 	{
 		// проверка инвариантов - обязательные правила для объекта
 		if (string.IsNullOrWhiteSpace(title))
@@ -32,6 +36,7 @@ public class Book
 
 		return new Book
 		{
+			Id = id ?? Guid.Empty,
 			Title = title,
 			Name = name,
 			Description = description,
@@ -41,6 +46,7 @@ public class Book
 		};
 	}
 
+	// собственное поведение модели
 	public void ChangePrice(decimal newPrice)
 	{
 		if (newPrice <= 0)
