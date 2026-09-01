@@ -1,5 +1,3 @@
-using Marten.Newtonsoft;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // для подключения Swagger
@@ -17,6 +15,9 @@ builder.Services.AddMarten(option =>
 		nonPublicMembersStorage: Weasel.Core.NonPublicMembersStorage.All
 	);
 	option.Schema.For<Book>().FullTextIndex("russian"); // полнотекстовый индекс для Book с языковым словарем
+
+	option.Projections.Snapshot<BookPriceHistory>(SnapshotLifecycle.Inline); // регистрация проекции
+																																					 // (snapshot обновляется в транзакции записи события)
 })
 .UseLightweightSessions()
 .InitializeWith<InitializeBookDatabase>()
