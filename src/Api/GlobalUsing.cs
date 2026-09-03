@@ -13,6 +13,9 @@ global using Wolverine.FluentValidation;
 global using Riok.Mapperly.Abstractions;
 global using JasperFx.Events.Projections;
 global using Marten.Newtonsoft;
+global using System.Collections.Concurrent;
+global using System.Threading.Channels;
+global using System.Runtime.CompilerServices;
 // global using Mapster;
 // global using JasperFx;
 
@@ -24,3 +27,4 @@ global using Catalog.Api.Exceptions;
 global using Catalog.Api.Middleware;
 global using Catalog.Api.Books.ChangeBookPrice;
 global using Catalog.Api.Books.GetBookPriceHistory;
+global using Catalog.Api.Common;

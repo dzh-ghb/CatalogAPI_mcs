@@ -47,6 +47,11 @@ builder.Services.AddCarter();
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
+builder.Services.AddSingleton<IBookLiveFeed, BookLiveFeed>();
+
+// настройка времени ожидания отключения клиентов от сервера Kestrel'ом
+builder.Services.Configure<HostOptions>(options => options.ShutdownTimeout = TimeSpan.FromSeconds(1));
+
 var app = builder.Build();
 
 app.UseExceptionHandler(opt => { });

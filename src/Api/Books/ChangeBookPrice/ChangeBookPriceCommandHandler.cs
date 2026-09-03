@@ -23,6 +23,7 @@ public class ChangeBookPriceCommandHandler
 	public static async Task<ChangeBookPriceResult> Handle(
 		ChangeBookPriceCommand command,
 		IDocumentSession session,
+		IBookLiveFeed bookLiveFeed,
 		CancellationToken cancellationToken
 	)
 	{
@@ -52,6 +53,9 @@ public class ChangeBookPriceCommandHandler
 		{
 			session.Events.Append(book.Id, priceChanged);
 		}
+
+		// факт изменения ценника гарантирует оповещение клиентов
+		bookLiveFeed.Publish(priceChanged);
 
 		return new ChangeBookPriceResult(book.Id, oldPrice, book.Price);
 	}
