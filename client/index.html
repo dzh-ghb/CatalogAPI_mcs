@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<!-- клиент-дашборд -->
+
+<head>
+    <meta charset="UTF-8">
+    <title>Живая лента цен — Catalog API</title>
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #0b0d12;
+            color: #e6e6e6;
+            margin: 0;
+            padding: 24px;
+        }
+
+        header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .status {
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #f87171;
+            display: inline-block;
+        }
+
+        .status.connected::before {
+            background: #4ade80;
+        }
+
+        .status.connected {
+            color: #4ade80;
+        }
+
+        .status.disconnected {
+            color: #f87171;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .controls input {
+            background: #161922;
+            border: 1px solid #262b36;
+            color: #e6e6e6;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 12px;
+            width: 240px;
+        }
+
+        .controls button {
+            background: #262b36;
+            border: none;
+            color: #e6e6e6;
+            padding: 7px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .controls button:hover {
+            background: #323847;
+        }
+
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+        }
+
+        .card {
+            background: #12151c;
+            border: 1px solid #1f2430;
+            border-radius: 10px;
+            padding: 14px 16px;
+            position: relative;
+            overflow: hidden;
+            transition: box-shadow .3s ease;
+        }
+
+        .card .title {
+            font-size: 13px;
+            color: #9aa0ac;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 6px;
+        }
+
+        .card .price {
+            font-size: 26px;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            transition: color .4s ease;
+        }
+
+        .card .delta {
+            font-size: 12px;
+            font-variant-numeric: tabular-nums;
+            height: 16px;
+            margin-bottom: 6px;
+        }
+
+        .card .delta.up {
+            color: #4ade80;
+        }
+
+        .card .delta.down {
+            color: #f87171;
+        }
+
+        .card canvas {
+            width: 100%;
+            height: 48px;
+            display: block;
+        }
+
+        .card .updated {
+            font-size: 10px;
+            color: #565d6b;
+            margin-top: 4px;
+        }
+
+        .flash-up {
+            box-shadow: 0 0 0 1px #4ade80 inset;
+        }
+
+        .flash-down {
+            box-shadow: 0 0 0 1px #f87171 inset;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Живая лента цен</h1>
+        <div class="controls">
+            <span id="status" class="status disconnected">отключено</span>
+            <input id="feedUrl" value="http://localhost:1905" spellcheck="false">
+            <button id="reconnect">Переподключиться</button>
+        </div>
+    </header>
+
+    <div id="grid"></div>
+
+    <script>
+        // products: bookId -> { title, el, priceEl, deltaEl, canvas, ctx, series: number[], lastPrice }
+        const products = new Map();
+        const grid = document.getElementById("grid");
+        const statusEl = document.getElementById("status");
+        let eventSource = null;
+
+        function colorFor(bookId) {
+            let hash = 0;
+            for (const ch of bookId) hash = (hash * 31 + ch.charCodeAt(0)) | 0;
+            const hue = Math.abs(hash) % 360;
+            return `hsl(${hue}, 70%, 60%)`;
+        }
+
+        function createCard(bookId, title, initialPrice) {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `
+    <div class="title">${title ?? bookId}</div>
+    <div class="delta"></div>
+    <div class="price">${formatPrice(initialPrice)}</div>
+    <canvas></canvas>
+    <div class="updated">—</div>
+  `;
+            grid.appendChild(card);
+
+            const canvas = card.querySelector("canvas");
+            // ретина: рисуем в реальных пикселях, а не в CSS-пикселях
+            canvas.width = canvas.clientWidth * devicePixelRatio || 240;
+            canvas.height = 48 * devicePixelRatio;
+
+            const entry = {
+                title: title ?? bookId,
+                card,
+                priceEl: card.querySelector(".price"),
+                deltaEl: card.querySelector(".delta"),
+                updatedEl: card.querySelector(".updated"),
+                canvas,
+                ctx: canvas.getContext("2d"),
+                series: initialPrice != null ? [initialPrice] : [],
+                lastPrice: initialPrice ?? null,
+            };
+            products.set(bookId, entry);
+            return entry;
+        }
+
+        function formatPrice(price) {
+            if (price == null) return "—";
+            return new Intl.NumberFormat("ru-RU").format(price) + " ₽";
+        }
+
+        function drawSparkline(entry) {
+            const { ctx, canvas, series } = entry;
+            const w = canvas.width, h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+            if (series.length < 2) return;
+
+            const min = Math.min(...series), max = Math.max(...series);
+            const pad = 4 * devicePixelRatio;
+            const x = i => pad + (i / (series.length - 1)) * (w - 2 * pad);
+            const y = p => h - pad - ((p - min) / (max - min || 1)) * (h - 2 * pad);
+
+            ctx.strokeStyle = colorFor(entry.bookId || "0");
+            ctx.lineWidth = 2 * devicePixelRatio;
+            ctx.beginPath();
+            series.forEach((p, i) => i === 0 ? ctx.moveTo(x(i), y(p)) : ctx.lineTo(x(i), y(p)));
+            ctx.stroke();
+
+            // последняя точка — акцент
+            ctx.fillStyle = ctx.strokeStyle;
+            ctx.beginPath();
+            ctx.arc(x(series.length - 1), y(series[series.length - 1]), 3 * devicePixelRatio, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function applyPriceChange(bookId, title, newPrice, changedAt) {
+            let entry = products.get(bookId);
+            if (!entry) entry = createCard(bookId, title, newPrice);
+            entry.bookId = bookId;
+
+            const prevPrice = entry.lastPrice;
+            entry.series.push(newPrice);
+            if (entry.series.length > 40) entry.series.shift();
+            entry.lastPrice = newPrice;
+
+            entry.priceEl.textContent = formatPrice(newPrice);
+            entry.updatedEl.textContent = new Date(changedAt).toLocaleTimeString();
+            drawSparkline(entry);
+
+            if (prevPrice != null && prevPrice !== newPrice) {
+                const up = newPrice > prevPrice;
+                const diff = newPrice - prevPrice;
+                entry.deltaEl.textContent = (up ? "▲ +" : "▼ ") + new Intl.NumberFormat("ru-RU").format(diff);
+                entry.deltaEl.className = "delta " + (up ? "up" : "down");
+
+                entry.card.classList.remove("flash-up", "flash-down");
+                // reflow, чтобы анимация класса перезапустилась при повторных изменениях подряд
+                void entry.card.offsetWidth;
+                entry.card.classList.add(up ? "flash-up" : "flash-down");
+                setTimeout(() => entry.card.classList.remove("flash-up", "flash-down"), 600);
+            }
+        }
+
+        async function loadInitialBooks(baseUrl) {
+            try {
+                const url = new URL("/books", baseUrl);
+                url.searchParams.set("PageSize", "100");
+                const response = await fetch(url);
+                const data = await response.json();
+                for (const book of data.books ?? []) {
+                    if (!products.has(book.id)) {
+                        createCard(book.id, book.title, book.price).bookId = book.id;
+                    }
+                }
+            } catch {
+                // не критично — карточки появятся по мере прихода событий
+            }
+        }
+
+        function setStatus(connected) {
+            statusEl.textContent = connected ? "подключено" : "отключено";
+            statusEl.className = "status " + (connected ? "connected" : "disconnected");
+        }
+
+        async function connect() {
+            if (eventSource) eventSource.close();
+            products.clear();
+            grid.innerHTML = "";
+
+            const baseUrl = document.getElementById("feedUrl").value.trim();
+            await loadInitialBooks(baseUrl);
+
+            eventSource = new EventSource(new URL("/books/live", baseUrl));
+            eventSource.onopen = () => setStatus(true);
+            eventSource.onerror = () => setStatus(false);
+
+            eventSource.addEventListener("price-changed", (event) => {
+                const p = JSON.parse(event.data);
+                const title = products.get(p.bookId)?.title;
+                applyPriceChange(p.bookId, title, p.newPrice, p.changedAt);
+            });
+        }
+
+        document.getElementById("reconnect").addEventListener("click", connect);
+        connect();
+    </script>
+</body>
+
+</html>

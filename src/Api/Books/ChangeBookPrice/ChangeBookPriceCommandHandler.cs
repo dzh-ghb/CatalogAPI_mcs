@@ -42,7 +42,7 @@ public class ChangeBookPriceCommandHandler
 			DateTimeOffset.UtcNow
 		);
 
-		// стрим для записи события
+		// стрим для записи события в Marten
 		var stream = await session.Events.FetchStreamStateAsync(book.Id, cancellationToken);
 
 		if (stream is null) // потока нет (запуск первым событием)

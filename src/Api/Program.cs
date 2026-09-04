@@ -47,14 +47,27 @@ builder.Services.AddCarter();
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
+// одна шина на все приложение
 builder.Services.AddSingleton<IBookLiveFeed, BookLiveFeed>();
 
 // настройка времени ожидания отключения клиентов от сервера Kestrel'ом
 builder.Services.Configure<HostOptions>(options => options.ShutdownTimeout = TimeSpan.FromSeconds(1));
 
+// доступ к API с других источников (origin)
+builder.Services.AddCors(options =>
+{
+	options.AddDefaultPolicy(policy =>
+		policy
+			.AllowAnyOrigin()
+			.AllowAnyMethod()
+			.AllowAnyHeader());
+});
+
 var app = builder.Build();
 
 app.UseExceptionHandler(opt => { });
+
+app.UseCors();
 
 app.MapCarter();
 
