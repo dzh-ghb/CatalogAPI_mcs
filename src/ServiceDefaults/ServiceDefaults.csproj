@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Catalog.ServiceDefaults</RootNamespace> <!--одно пространство имен-->
+    <IsAspireSharedProject>true</IsAspireSharedProject> <!--метка для Aspire, что это служебный проект, не сервис-->
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" /> <!--ссылка на фреймворк дает доступ -->
+    <!--к нужным типам ASP.NET Core: WebApplication, health-checks, маппинг маршрутов.
+    Проект ServiceDefaults - библиотека-расширение, не веб-приложение-->
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="10.9.0" />
+    <PackageReference Include="Microsoft.Extensions.ServiceDiscovery" Version="10.9.0" />
+    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.18.0" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.18.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.18.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.18.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.18.0" />
+  </ItemGroup>
+
+</Project>
