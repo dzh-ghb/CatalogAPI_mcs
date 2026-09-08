@@ -1,5 +1,8 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults(); // библиотека умолчаний Aspire (телеметрия, health-чеки, необходимые маршруты);
+															// инструментация должна подниматься раньше "объектов" наблюдения
+
 // для подключения Swagger
 // builder.Services.AddEndpointsApiExplorer();
 // builder.Services.AddSwaggerGen();
@@ -70,6 +73,8 @@ app.UseExceptionHandler(opt => { });
 app.UseCors();
 
 app.MapCarter();
+
+app.MapDefaultsEndpoints(); // проверки работоспособности
 
 if (app.Environment.IsDevelopment())
 {

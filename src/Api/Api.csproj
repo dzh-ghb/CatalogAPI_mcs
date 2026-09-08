@@ -37,4 +37,8 @@
     <!-- <PackageReference Include="JasperFx" Version="2.47.0" /> -->
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ServiceDefaults\ServiceDefaults.csproj" />
+  </ItemGroup>
+
 </Project>
