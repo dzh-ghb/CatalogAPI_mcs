@@ -10,7 +10,7 @@ builder.AddServiceDefaults(); // библиотека умолчаний Aspire 
 // для подключения Scalar
 builder.Services.AddOpenApi();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
+var connectionString = builder.Configuration.GetConnectionString("catalog-db")!;
 builder.Services.AddMarten(option =>
 {
 	option.Connection(connectionString);

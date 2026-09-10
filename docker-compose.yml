@@ -1,3 +1,10 @@
+# CatalogAPI (PostgreSQL для локальной разработки)
+
+# Запуск: docker compose up -d
+# Остановка: docker compose down
+# Остановка с удалением данных: docker compose down -v
+# Логи: docker compose logs -f postgres
+
 name: catalog-api
 
 services:
